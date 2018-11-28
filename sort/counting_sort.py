@@ -37,6 +37,28 @@ def counting_sort_stable(l):
     return s[min_num:max_num+1]
 
 
+def counting_sort_stable_strict(l):
+
+    max_num, min_num = get_max_and_min(l)
+    k = max_num - min_num + 1
+    c = [0] * k  # restrict side of counting_arr
+    s = [0] * len(l)
+
+    for x in l:
+        c[x - min_num] += 1
+
+    for index in range(k-1):
+        c[index+1] += c[index]
+
+    for index in range(len(l), 0, -1):  # important, how the sort is stable
+        input_val = l[index-1]
+        offset = input_val - min_num
+        s[c[offset]-1] = input_val
+        c[offset] -= 1
+
+    return s
+
+
 def counting_sort_unstable(l):
 
     max_num, min_num = get_max_and_min(l)
