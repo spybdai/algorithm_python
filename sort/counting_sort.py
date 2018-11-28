@@ -13,7 +13,55 @@ def get_max_and_min(l):
     return max_num, min_num
 
 
-def counting_sort(l):
+def counting_sort_stable(l):
+    """
+    according to specific scenario, can consider to optimize space of c
+    """
+
+    max_num, min_num = get_max_and_min(l)
+    c = [0] * (max_num + 1)
+    s = [0] * (len(l) + 1)
+
+    for x in l:
+        c[x] += 1
+
+    for index in range(max_num):
+        c[index+1] += c[index]
+
+    for index in range(len(l), 0, -1):  # important, how the sort is stable
+        input_val = l[index-1]
+        sum_count = c[input_val]
+        s[sum_count] = input_val
+        c[input_val] -= 1
+
+    return s[min_num:max_num+1]
+
+
+def counting_sort_unstable(l):
+
+    max_num, min_num = get_max_and_min(l)
+    c = [0] * (max_num + 1)
+    s = [0] * (len(l) + 1)
+
+    for x in l:
+        c[x] += 1
+
+    for index in range(max_num):
+        c[index+1] += c[index]
+
+    for index in range(len(l)):  # this is not stable, pay attention to loop
+        input_val = l[index]
+        sum_count = c[input_val]
+        s[sum_count] = input_val
+        c[input_val] -= 1
+
+    return s[min_num:max_num+1]
+
+
+def counting_sort_unstable_2(l):
+    """
+    this function is unstable neither.
+    """
 
     max_num, min_num = get_max_and_min(l)
     k = max_num - min_num + 1
@@ -28,25 +76,3 @@ def counting_sort(l):
             value = index + min_num
             l[pointer] = value
             pointer += 1
-
-
-def counting_sort_2(l):
-
-    print l
-    max_num, _ = get_max_and_min(l)
-    c = [0] * (max_num + 1)
-    s = c[:]
-
-    for x in l:
-        c[x] += 1
-
-    for index in range(max_num):
-        c[index+1] += c[index]
-
-    for index in range(len(l), 0, -1):
-        origin_val = l[index-1]
-        count_val = c[origin_val]
-        s[count_val-1] = origin_val
-
-    l[:] = s
-    print l

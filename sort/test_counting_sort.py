@@ -4,7 +4,9 @@ import sys
 sys.path.append('..')
 
 from utils.timer import timer
-from sort.counting_sort import get_max_and_min, counting_sort, counting_sort_2
+from utils.check import check_sort_increase
+from sort.counting_sort import get_max_and_min, counting_sort_stable, counting_sort_unstable, \
+    counting_sort_unstable_2
 
 
 def test_get_max_and_min():
@@ -14,22 +16,16 @@ def test_get_max_and_min():
 
 
 def test_counting_sort():
-    l = [random.randint(1, 10) for _ in range(10)]
-    l2 = l[:]
+    l = [random.randint(1, 100000) for _ in range(100000)]
 
-    timer(counting_sort)(l)
-    for x in range(len(l)-1):
-        if l[x] > l[x+1]:
-            print 'FAIL!'
-            break
-    print 'SUCCESS!'
+    l_sorted = timer(counting_sort_stable)(l)
+    print check_sort_increase(l_sorted)
 
-    timer(counting_sort_2)(l2)
-    for x in range(len(l2)-1):
-        if l2[x] > l2[x+1]:
-            print 'FAIL!'
-            break
-    print 'SUCCESS!'
+    l_sorted = timer(counting_sort_unstable)(l)
+    print check_sort_increase(l_sorted)
+
+    timer(counting_sort_unstable_2)(l)
+    print check_sort_increase(l)
 
 
 def test():

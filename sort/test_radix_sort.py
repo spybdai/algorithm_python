@@ -4,6 +4,7 @@ import sys
 sys.path.append('..')
 
 from utils.timer import timer
+from utils.check import check_sort_increase
 from sort.radix_sort import find_max, get_loop_number, radix_sort
 
 
@@ -21,11 +22,7 @@ def test_get_max_width():
 def test_radix_sort():
     l = [random.randint(0, 999999999) for _ in range(100000)]
     timer(radix_sort)(l)
-    for x in range(len(l)-1):
-        if l[x] > l[x+1]:
-            print 'FAIL!'
-            break
-    print 'SUCCESS!'
+    print check_sort_increase(l)
 
 
 def test():
